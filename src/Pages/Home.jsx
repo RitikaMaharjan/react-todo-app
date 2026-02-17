@@ -26,38 +26,49 @@ export default function Home() {
     .filter(todo => todo.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="todo-container">
+    <>
+      {/* NAVBAR */}
       <Header />
 
-      <input
-        type="text"
-        placeholder="Search task..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="search-input"
-      />
+      {/* MAIN CONTENT WRAPPER (centers dashboard content) */}
+      <div className="main-content">
+        <div className="todo-container">
 
-      <div className="filters">
-        {["all", "active", "completed"].map(f => (
-          <button key={f} className={filter === f ? "active" : ""} onClick={() => setFilter(f)}>
-            {f}
-          </button>
-        ))}
+          <input
+            type="text"
+            placeholder="Search task..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
+
+          <div className="filters">
+            {["all", "active", "completed"].map(f => (
+              <button
+                key={f}
+                className={filter === f ? "active" : ""}
+                onClick={() => setFilter(f)}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          <TodoList
+            todos={filteredTodos}
+            toggleComplete={toggleComplete}
+            deleteTask={deleteTask}
+            startEdit={startEdit}
+          />
+
+          <div className="footer">
+            <span>{todos.filter(t => !t.completed).length} tasks left</span>
+            <Link to="/add">
+              <button>Add New Task</button>
+            </Link>
+          </div>
+        </div>
       </div>
-
-      <TodoList
-        todos={filteredTodos}
-        toggleComplete={toggleComplete}
-        deleteTask={deleteTask}
-        startEdit={startEdit}
-      />
-
-      <div className="footer">
-        <span>{todos.filter(t => !t.completed).length} tasks left</span>
-        <Link to="/add">
-          <button>Add New Task</button>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }
